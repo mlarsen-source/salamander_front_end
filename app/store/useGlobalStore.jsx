@@ -5,7 +5,7 @@ export const useGlobalStore = create((set) => ({
   videoArray: ["testVideo1.mp4", "testVideo2.mp4", "testVideo3.mp4"],
   csvArray: ["testFile1.csv", "testFile2.csv", "testFile3.csv"],
   jobId: "123abc",
-  selectedVideo: "ensantina.mp4",
+  selectedVideo: "salamander_video.mp4",
   selectedCsv: "ensantina.mp4.csv",
   thumbnail: null,
   targetColor: "FFA500",

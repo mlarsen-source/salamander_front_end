@@ -4,6 +4,7 @@ import CsvList from "@/app/components/CsvList";
 import Info from "@/app/components/Info";
 import VideoList from "@/app/components/VideoList";
 import { useGlobalStore } from "@/app/store/useGlobalStore";
+import List from '@/app/components/List'
 
 export default function HomePage() {
   const setVideoArray = useGlobalStore((state) => state.setVideoArray);
@@ -40,12 +41,16 @@ export default function HomePage() {
   // setSelectedCsv(selectedCsv);
   // render results page
 
+  function setSelected(selected, type) {
+    
+  }
+
   return (
     <main>
       <h1>This is the Home Page</h1>
       <Info />
-      <VideoList />
-      <CsvList />
+      <List title='Videos' handleSelected={setSelected}/>
+      {/* <List title='Results' handleSelected={setSelected}/> */}
     </main>
   );
 }
