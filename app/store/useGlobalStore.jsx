@@ -18,7 +18,6 @@ export const useGlobalStore = create((set) => ({
   setThumbnail: (img) => set({ thumbnail: img }),
   setSelectedVideo: (fileName) => set({ selectedVideo: fileName }),
   setSelectedCsv: (fileName) => set({ selectedCsv: fileName }),
-  setThumbnail: (img) => set({ thumbnail: img }),
   setTargetColor: (color) => set({ targetColor: color }),
   setThreshold: (value) => set({ threshold: value }),
 }));

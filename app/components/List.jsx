@@ -1,11 +1,10 @@
-import { useGlobalStore, setVideoArray } from "@/app/store/useGlobalStore";
-import { useState, useEffect } from "react";
+import { useGlobalStore } from "@/app/store/useGlobalStore";
+import { useEffect } from "react";
 
-export default function List({ title }) {
+export default function List({ title, handleSelected }) {
   const setVideoArray = useGlobalStore((state) => state.setVideoArray);
   const setCsvArray = useGlobalStore((state) => state.setCsvArray);
   const type = title.toLowerCase();
-  
 
   useEffect(() => {
     async function fetchData() {
@@ -18,9 +17,8 @@ export default function List({ title }) {
           return;
         }
         console.log(data);
-        if (type == 'videos') setVideoArray(data);
-        if (type == 'results') setCsvArray(data);
-      
+        if (type == "videos") setVideoArray(data);
+        if (type == "results") setCsvArray(data);
       } catch {}
     }
 
@@ -31,12 +29,17 @@ export default function List({ title }) {
   const csvList = useGlobalStore((state) => state.csvArray);
 
   const fileNames = type == "videos" ? videoList : csvList;
-  const route = type == "videos" ? '/preview' : '/results'
+  const route = type == "videos" ? "/preview" : "/results";
 
   const fileList = fileNames.map((fileName) => {
     return (
       <li key={fileName}>
-        <a href={route} onClick={() => handleSelected(type)}> {fileName} </a>
+        <a
+          href={route}
+          onClick={() => handleSelected(type, fileName)}>
+          {" "}
+          {fileName}{" "}
+        </a>
       </li>
     );
   });
