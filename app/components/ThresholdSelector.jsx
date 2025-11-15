@@ -8,6 +8,7 @@ export default function ThresholdSelector() {
   const targetColor = useGlobalStore((state) => state.targetColor);
   const threshold = useGlobalStore((state) => state.threshold);
   const setThreshold = useGlobalStore((state) => state.setThreshold);
+  console.log(threshold);
 
   const canvasRef = useRef(null);
   const [bwImage, setBwImage] = useState(null);
@@ -67,6 +68,78 @@ export default function ThresholdSelector() {
       }
 
       ctx.putImageData(frame, 0, 0);
+
+      // Find the largest connected white region and draw its centroid
+      const width = canvas.width;
+      const height = canvas.height;
+      const totalPixels = width * height;
+
+      // Build a mask of white pixels (1 for white, 0 for black)
+      const whiteMask = new Uint8Array(totalPixels);
+      for (let p = 0, i = 0; p < totalPixels; p++, i += 4) {
+        whiteMask[p] = pixels[i] === 255 ? 1 : 0;
+      }
+
+      // Visited set for connected component search
+      const visited = new Uint8Array(totalPixels);
+
+      let maxCount = 0;
+      let maxSumX = 0;
+      let maxSumY = 0;
+
+      for (let start = 0; start < totalPixels; start++) {
+        if (!whiteMask[start] || visited[start]) continue;
+
+        // DFS stack
+        const stack = [start];
+        visited[start] = 1;
+
+        let count = 0;
+        let sumX = 0;
+        let sumY = 0;
+
+        while (stack.length) {
+          const cur = stack.pop();
+          count++;
+          const x = cur % width;
+          const y = (cur - x) / width;
+          sumX += x;
+          sumY += y;
+
+          // Explore 8-connected neighbors
+          for (let dy = -1; dy <= 1; dy++) {
+            for (let dx = -1; dx <= 1; dx++) {
+              if (dx === 0 && dy === 0) continue;
+              const nx = x + dx;
+              const ny = y + dy;
+              if (nx < 0 || ny < 0 || nx >= width || ny >= height) continue;
+              const np = ny * width + nx;
+              if (!visited[np] && whiteMask[np]) {
+                visited[np] = 1;
+                stack.push(np);
+              }
+            }
+          }
+        }
+
+        if (count > maxCount) {
+          maxCount = count;
+          maxSumX = sumX;
+          maxSumY = sumY;
+        }
+      }
+
+      // Draw a red circle (diameter 15px => radius 7.5px) at the centroid
+      if (maxCount > 0) {
+        const cx = maxSumX / maxCount;
+        const cy = maxSumY / maxCount;
+        ctx.beginPath();
+        ctx.arc(cx, cy, 15, 0, Math.PI * 2);
+        ctx.strokeStyle = "red";
+        ctx.lineWidth = 3;
+        ctx.stroke();
+      }
+
       const bwUrl = canvas.toDataURL();
       setBwImage(bwUrl);
     };
