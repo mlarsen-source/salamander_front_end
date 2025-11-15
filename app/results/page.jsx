@@ -17,9 +17,7 @@ export default function ResultsPage() {
 
     async function loadCsv() {
       try {
-        // need to add an api route to our server that takes the selected
-        // file name and returns the raw csv file.
-        const res = await fetch(`/api/csv?file=${selectedCsv}`);
+        const res = await fetch(`http://localhost:3000/api/csv/${selectedCsv}`);
 
         if (!res.ok) {
           setError("Failed to load CSV.");

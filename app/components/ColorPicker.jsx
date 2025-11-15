@@ -1,6 +1,7 @@
 "use client";
 
 import { useGlobalStore } from "@/app/store/useGlobalStore";
+import Image from "next/image";
 import { useEffect } from "react";
 
 export default function ColorPicker() {
@@ -42,11 +43,12 @@ export default function ColorPicker() {
       <h2>This is the ColorPicker Component</h2>
 
       {thumbnail ? (
-        <img
+        <Image
           src={thumbnail}
           alt="thumbnail"
+          width="300"
+          height="300"
           style={{
-            maxWidth: "300px",
             border: "2px solid #000000ff",
             cursor: "crosshair",
           }}

@@ -1,8 +1,8 @@
 "use client";
-
 import ColorPicker from "@/app/components/ColorPicker";
 import ThresholdSelector from "@/app/components/ThresholdSelector";
 import { useGlobalStore } from "@/app/store/useGlobalStore";
+import { useRouter } from "next/navigation";
 
 export default function VideoProcessor() {
   const selectedVideo = useGlobalStore((state) => state.selectedVideo);
@@ -10,11 +10,11 @@ export default function VideoProcessor() {
 
   const targetColor = useGlobalStore((state) => state.targetColor);
   const threshold = useGlobalStore((state) => state.threshold);
-
+  const router = useRouter();
   async function startProcess() {
     try {
       const res = await fetch(
-        `http://localhost:3001/process/${selectedVideo}?targetColor=${targetColor}&threshold=${threshold}`,
+        `http://localhost:3000/process/${selectedVideo}?targetColor=${targetColor}&threshold=${threshold}`,
         {
           method: "POST",
         }
