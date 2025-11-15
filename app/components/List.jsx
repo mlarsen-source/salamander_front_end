@@ -1,4 +1,5 @@
 import { useGlobalStore } from "@/app/store/useGlobalStore";
+import Link from "next/link";
 import { useEffect } from "react";
 
 export default function List({ title, handleSelected }) {
@@ -34,12 +35,12 @@ export default function List({ title, handleSelected }) {
   const fileList = fileNames.map((fileName) => {
     return (
       <li key={fileName}>
-        <a
+        <Link
           href={route}
           onClick={() => handleSelected(type, fileName)}>
           {" "}
           {fileName}{" "}
-        </a>
+        </Link>
       </li>
     );
   });
