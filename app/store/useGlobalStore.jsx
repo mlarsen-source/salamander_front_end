@@ -8,8 +8,8 @@ export const useGlobalStore = create((set) => ({
   selectedVideo: null,
   selectedCsv: null,
   thumbnail: null,
-  targetColor: "FFA500",
-  threshold: 10,
+  targetColor: "530004",
+  threshold: 40,
 
   // Global State Setters
   setVideoArray: (arr) => set({ videoArray: arr }),
