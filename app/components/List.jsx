@@ -2,7 +2,9 @@ import { useGlobalStore } from "@/app/store/useGlobalStore";
 import Link from "next/link";
 import { useEffect } from "react";
 
-export default function List({ title, handleSelected }) {
+export default function List({ title }) {
+  const setSelectedVideo = useGlobalStore((state) => state.setSelectedVideo);
+  const setSelectedCsv = useGlobalStore((state) => state.setSelectedCsv);
   const setVideoArray = useGlobalStore((state) => state.setVideoArray);
   const setCsvArray = useGlobalStore((state) => state.setCsvArray);
   const type = title.toLowerCase();
@@ -25,6 +27,14 @@ export default function List({ title, handleSelected }) {
 
     fetchData();
   }, []);
+
+  function handleSelected(type, fileName) {
+    if (type === "videos") {
+      setSelectedVideo(fileName);
+    } else {
+      setSelectedCsv(fileName);
+    }
+  }
 
   const videoList = useGlobalStore((state) => state.videoArray);
   const csvList = useGlobalStore((state) => state.csvArray);

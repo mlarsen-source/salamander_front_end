@@ -7,16 +7,8 @@ import { useGlobalStore } from "@/app/store/useGlobalStore";
 export default function HomePage() {
   const setVideoArray = useGlobalStore((state) => state.setVideoArray);
   const setCsvArray = useGlobalStore((state) => state.setCsvArray);
-  const setSelectedVideo = useGlobalStore((state) => state.setSelectedVideo);
-  const setSelectedCsv = useGlobalStore((state) => state.setSelectedCsv);
 
-  function setSelected(type, fileName) {
-    if (type === "videos") {
-      setSelectedVideo(fileName);
-    } else {
-      setSelectedCsv(fileName);
-    }
-  }
+  
 
   return (
     <main>
@@ -24,11 +16,9 @@ export default function HomePage() {
       <Info />
       <List
         title="Videos"
-        handleSelected={setSelected}
       />
       <List
         title="Results"
-        handleSelected={setSelected}
       />
     </main>
   );

@@ -2,12 +2,17 @@
 
 import { useGlobalStore } from "@/app/store/useGlobalStore";
 import { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
+import HomeButton from "@/app/components/HomeButton";
 
 export default function ProcessingPage() {
   const jobId = useGlobalStore((state) => state.jobId);
+  const setSelectedCsv = useGlobalStore((state) => state.setSelectedCsv);
+  const selectedVideo = useGlobalStore((state) => state.selectedVideo);
   const [processing, setProcessing] = useState(true);
   const [error, setError] = useState(false);
   const controllerRef = useRef(null);
+  const router = useRouter();
 
 
   // need to add logic to loop api fetch status using jobId until jobId == "done"
@@ -49,6 +54,9 @@ export default function ProcessingPage() {
 
         if (data.status !== "processing") {
           setProcessing(false);
+          setSelectedCsv(`${selectedVideo}.csv`);
+          cancelled = true;            // prevents scheduling the next timeout
+          router.push("/results");
           return; // stop polling on success/done
         }
       } catch (err) {
@@ -72,10 +80,38 @@ export default function ProcessingPage() {
       cancelled = true;
       if (controllerRef.current) controllerRef.current.abort();
       if (timeoutId) clearTimeout(timeoutId);
+      if (!processing && !error) {
+        setSelectedCsv(`${selectedVideo}.csv`);
+        router.push("/results");
+      }
     };
   }, [jobId]);
 
-  if (processing) return <div>Processing...</div>;
-  if (error) return <div>Error...</div>;
-  return <div>Success...</div>;
+  
+
+  if (processing) {
+    return (
+      <div>
+        <h1>Processing...</h1>
+        <p>This may take a few minutes...</p>
+      </div>
+    );
+  } 
+
+  if (error) {
+    return (
+      <div>
+        <h1>Error...</h1>
+        <p>An error occurred while processing the video.</p>
+        <HomeButton />
+      </div>
+    );
+  } 
+
+  return (
+    <div>
+      <h1>Success...</h1>
+      <p>The video has been processed successfully.</p>
+    </div>
+  );
 }

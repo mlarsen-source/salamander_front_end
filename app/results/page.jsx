@@ -45,7 +45,14 @@ export default function ResultsPage() {
     ? URL.createObjectURL(new Blob([csvText], { type: "text/csv" }))
     : null;
 
-  if (!selectedCsv) return <p>No CSV selected.</p>;
+  if (!selectedCsv) {
+    return (
+      <div>
+        <p>No CSV selected.</p>
+        <HomeButton />
+      </div>
+    );
+  }
 
   return (
     <div>

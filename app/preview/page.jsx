@@ -1,7 +1,7 @@
 "use client";
 
 import HomeButton from "@/app/components/HomeButton";
-import VideoList from "@/app/components/VideoList";
+import List from "@/app/components/List";
 import VideoProcessor from "@/app/components/VideoProcessor";
 
 export default function PreviewPage() {
@@ -9,7 +9,9 @@ export default function PreviewPage() {
     <main>
       <h1>This is the Preview Page</h1>
       <VideoProcessor />
-      <VideoList />
+      <List
+        title="Videos"
+      />
       <HomeButton />
     </main>
   );
