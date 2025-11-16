@@ -38,10 +38,13 @@ export default function ThresholdSelector() {
       const canvas = canvasRef.current;
       const ctx = canvas.getContext("2d");
 
-      canvas.width = img.width;
-      canvas.height = img.height;
+      // Render onto a fixed display size so overlay circle appears at a consistent on-screen size
+      const displayWidth = 300;
+      const scale = displayWidth / img.width;
+      canvas.width = displayWidth;
+      canvas.height = Math.round(img.height * scale);
 
-      ctx.drawImage(img, 0, 0);
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
       const frame = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const pixels = frame.data;
 
@@ -134,9 +137,9 @@ export default function ThresholdSelector() {
         const cx = maxSumX / maxCount;
         const cy = maxSumY / maxCount;
         ctx.beginPath();
-        ctx.arc(cx, cy, 15, 0, Math.PI * 2);
+        ctx.arc(cx, cy, 7.5, 0, Math.PI * 2);
         ctx.strokeStyle = "red";
-        ctx.lineWidth = 3;
+        ctx.lineWidth = 2;
         ctx.stroke();
       }
 
