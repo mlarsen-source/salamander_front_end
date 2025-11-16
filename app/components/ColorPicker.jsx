@@ -4,17 +4,25 @@ import { useGlobalStore } from "@/app/store/useGlobalStore";
 import { useEffect, useRef, useState } from "react";
 
 export default function ColorPicker() {
+  // Zustand state
   const selectedVideo = useGlobalStore((state) => state.selectedVideo);
   const thumbnail = useGlobalStore((state) => state.thumbnail);
   const setThumbnail = useGlobalStore((state) => state.setThumbnail);
   const setTargetColor = useGlobalStore((state) => state.setTargetColor);
 
+  // UI state
+  const [hoverColorHex, setHoverColorHex] = useState(null);
+  const [hoverColorRGB, setHoverColorRGB] = useState(null);
+  const [isLocked, setIsLocked] = useState(false);
+
+  // DEFAULT SYSTEM COLOR
+  const DEFAULT_COLOR = "00000";
+
+  // Refs
   const imgRef = useRef(null);
   const canvasRef = useRef(null);
 
-  const [hoverColorHex, setHoverColorHex] = useState(null);
-  const [hoverColorRGB, setHoverColorRGB] = useState(null);
-
+  // Load thumbnail when video changes
   useEffect(() => {
     if (!selectedVideo) return;
 
@@ -23,7 +31,6 @@ export default function ColorPicker() {
         const res = await fetch(
           `http://localhost:3000/thumbnail/${selectedVideo}`
         );
-
         if (!res.ok) {
           console.error("Failed to load thumbnail");
           return;
@@ -32,15 +39,19 @@ export default function ColorPicker() {
         const blob = await res.blob();
         const url = URL.createObjectURL(blob);
         setThumbnail(url);
+
+        // Reset picking and restore default color
+        setIsLocked(false);
+        setTargetColor(DEFAULT_COLOR);
       } catch (err) {
         console.error("Error fetching thumbnail:", err);
       }
     }
 
     loadThumbnail();
-  }, [selectedVideo, setThumbnail]);
+  }, [selectedVideo, setThumbnail, setTargetColor]);
 
-  // draw image to canvas for pixel reading
+  // Draw image to canvas for pixel sampling
   useEffect(() => {
     if (!thumbnail || !imgRef.current || !canvasRef.current) return;
 
@@ -48,51 +59,42 @@ export default function ColorPicker() {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
 
-    // if image already loaded (cached), onload may not fire, so guard both
     const draw = () => {
       canvas.width = img.naturalWidth || img.width;
       canvas.height = img.naturalHeight || img.height;
       ctx.drawImage(img, 0, 0);
     };
 
-    if (img.complete) {
-      draw();
-    } else {
-      img.onload = draw;
-    }
+    img.complete ? draw() : (img.onload = draw);
   }, [thumbnail]);
 
+  // Helpers
   function rgbToHex(r, g, b) {
     return (
       "#" +
       [r, g, b]
-        .map((val) => val.toString(16).padStart(2, "0"))
+        .map((v) => v.toString(16).padStart(2, "0"))
         .join("")
         .toUpperCase()
     );
   }
 
+  // Hover sampling (disabled if locked)
   function handleHover(e) {
-    if (!canvasRef.current || !imgRef.current) return;
+    if (isLocked) return;
 
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+    const rect = e.target.getBoundingClientRect();
 
-    const rect = e.currentTarget.getBoundingClientRect();
-
-    // position within displayed image
     const displayX = e.clientX - rect.left;
     const displayY = e.clientY - rect.top;
 
-    // scale from displayed size -> canvas size
     const scaleX = canvas.width / rect.width;
     const scaleY = canvas.height / rect.height;
 
     const x = Math.floor(displayX * scaleX);
     const y = Math.floor(displayY * scaleY);
-
-    if (x < 0 || y < 0 || x >= canvas.width || y >= canvas.height) return;
 
     const pixel = ctx.getImageData(x, y, 1, 1).data;
 
@@ -103,42 +105,58 @@ export default function ColorPicker() {
     setHoverColorHex(hex);
   }
 
+  // Click locks selection, stores in Zustand
   function handleClick() {
     if (!hoverColorHex) return;
-    console.log("Saved picked color:", hoverColorHex);
-    setTargetColor(hoverColorHex.replace("#", "")); // store without '#'
+    const cleanHex = hoverColorHex.replace("#", "");
+    setTargetColor(cleanHex);
+    setIsLocked(true);
+  }
+
+  // Reset to default, unlock picking mode
+  function resetPicker() {
+    setIsLocked(false);
+    setTargetColor(DEFAULT_COLOR);
+    setHoverColorHex(null);
+    setHoverColorRGB(null);
   }
 
   return (
     <div style={{ marginBottom: "20px" }}>
-      <h2>This is the ColorPicker Component</h2>
+      <h2>Color Picker</h2>
 
       {thumbnail && (
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "10px",
-            marginBottom: "10px",
-          }}>
+        <>
+          {/* Color Indicator */}
           <div
             style={{
-              width: "50px",
-              height: "50px",
-              border: "2px solid #000",
-              backgroundColor: hoverColorHex || "transparent",
-            }}
-          />
-          <div style={{ fontWeight: "bold", minWidth: "120px" }}>
-            {hoverColorHex || "--"}
-            <br />
-            {hoverColorRGB || ""}
-          </div>
-        </div>
-      )}
+              display: "flex",
+              alignItems: "center",
+              gap: "12px",
+              marginBottom: "10px",
+            }}>
+            <div
+              style={{
+                width: "50px",
+                height: "50px",
+                border: "2px solid #000",
+                backgroundColor: hoverColorHex || `#${DEFAULT_COLOR}`,
+              }}
+            />
+            <div style={{ fontWeight: "bold", minWidth: "130px" }}>
+              {hoverColorHex || `#${DEFAULT_COLOR}`}
+              <br />
+              {hoverColorRGB || ""}
+            </div>
 
-      {thumbnail ? (
-        <>
+            {isLocked ? (
+              <button onClick={resetPicker}>Reset</button>
+            ) : (
+              <span> Click image to select Color</span>
+            )}
+          </div>
+
+          {/* Canvas + Image */}
           <canvas
             ref={canvasRef}
             style={{ display: "none" }}
@@ -150,17 +168,16 @@ export default function ColorPicker() {
             alt="thumbnail"
             style={{
               maxWidth: "300px",
-              border: "2px solid #000000ff",
+              border: "2px solid black",
               cursor: "crosshair",
-              display: "block",
             }}
             onMouseMove={handleHover}
             onClick={handleClick}
           />
         </>
-      ) : (
-        <p>No thumbnail loaded</p>
       )}
+
+      {!thumbnail && <p>No thumbnail loaded</p>}
     </div>
   );
 }
