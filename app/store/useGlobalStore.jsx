@@ -10,6 +10,8 @@ export const useGlobalStore = create((set) => ({
   thumbnail: null,
   targetColor: "000000",
   threshold: 40,
+  videoWidth: null,
+  videoHeight: null,
 
   // Global State Setters
   setVideoArray: (arr) => set({ videoArray: arr }),
@@ -20,4 +22,6 @@ export const useGlobalStore = create((set) => ({
   setSelectedCsv: (fileName) => set({ selectedCsv: fileName }),
   setTargetColor: (color) => set({ targetColor: color }),
   setThreshold: (value) => set({ threshold: value }),
+  setVideoWidth: (width) => set({ videoWidth: width }),
+  setVideoHeight: (height) => set({ videoHeight: height }),
 }));
