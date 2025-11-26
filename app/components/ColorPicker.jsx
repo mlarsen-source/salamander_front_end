@@ -1,16 +1,15 @@
 "use client";
 
+import { useThumbnailLoader } from "@/app/hooks/useThumbnailLoader";
 import { useGlobalStore } from "@/app/store/useGlobalStore";
 import { useEffect, useRef, useState } from "react";
 import styles from "./ColorPicker.module.css";
 
 export default function ColorPicker() {
-  const selectedVideo = useGlobalStore((state) => state.selectedVideo);
+  useThumbnailLoader();
+
   const thumbnail = useGlobalStore((state) => state.thumbnail);
-  const setThumbnail = useGlobalStore((state) => state.setThumbnail);
   const setTargetColor = useGlobalStore((state) => state.setTargetColor);
-  const setVideoWidth = useGlobalStore((state) => state.setVideoWidth);
-  const setVideoHeight = useGlobalStore((state) => state.setVideoHeight);
 
   const [hoverColorHex, setHoverColorHex] = useState(null);
   const [hoverColorRGB, setHoverColorRGB] = useState(null);
@@ -19,46 +18,6 @@ export default function ColorPicker() {
 
   const imgRef = useRef(null);
   const canvasRef = useRef(null);
-
-  useEffect(() => {
-    if (!selectedVideo) return;
-
-    async function loadThumbnail() {
-      try {
-        const res = await fetch(
-          `http://localhost:3000/thumbnail/${selectedVideo}`
-        );
-        if (!res.ok) {
-          console.error("Failed to load thumbnail");
-          return;
-        }
-
-        const blob = await res.blob();
-        const url = URL.createObjectURL(blob);
-        setThumbnail(url);
-        setIsLocked(false);
-        setTargetColor(DEFAULT_COLOR);
-
-        // Load image into DOM to extract natural size
-        const img = new Image();
-        img.src = url;
-        img.onload = () => {
-          setVideoWidth(img.naturalWidth);
-          setVideoHeight(img.naturalHeight);
-        };
-      } catch (err) {
-        console.error("Error fetching thumbnail:", err);
-      }
-    }
-
-    loadThumbnail();
-  }, [
-    selectedVideo,
-    setThumbnail,
-    setTargetColor,
-    setVideoWidth,
-    setVideoHeight,
-  ]);
 
   useEffect(() => {
     if (!thumbnail || !imgRef.current || !canvasRef.current) return;
