@@ -34,6 +34,9 @@ export default function List({ title }) {
       setSelectedVideo(fileName);
     } else {
       setSelectedCsv(fileName);
+      const videoFilename = fileName.slice(0, -4);
+      console.log(videoFilename);
+      setSelectedVideo(videoFilename);
     }
   }
 
@@ -45,7 +48,9 @@ export default function List({ title }) {
 
   const fileList = fileNames.map((fileName) => {
     return (
-      <li key={fileName} className={styles.item}>
+      <li
+        key={fileName}
+        className={styles.item}>
         <Link
           className={styles.link}
           href={route}
