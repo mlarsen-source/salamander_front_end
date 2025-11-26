@@ -1,7 +1,9 @@
+import styles from "./Info.module.css";
+
 export default function Info() {
   return (
-    <section>
-      <h2>This is the Info Component</h2>
+    <section className={styles.section}>
+      <h2 className={styles.title}>This is the Info Component</h2>
     </section>
   );
 }

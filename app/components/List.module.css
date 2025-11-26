@@ -1,0 +1,32 @@
+/* List component styles */
+.section {
+  padding: 16px;
+  border: 1px solid color-mix(in oklab, var(--text) 12%, transparent);
+  border-radius: var(--radius);
+  background: color-mix(in oklab, var(--background) 75%, transparent);
+}
+
+.title {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+
+.item a {
+  display: inline-block;
+  padding: 6px 8px;
+  border-radius: var(--radius);
+}
+.item a:hover {
+  background: color-mix(in oklab, var(--primary) 15%, transparent);
+  text-decoration: none;
+}
+
+

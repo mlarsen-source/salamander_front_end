@@ -3,6 +3,7 @@
 import Info from "@/app/components/Info";
 import List from "@/app/components/List";
 import { useGlobalStore } from "@/app/store/useGlobalStore";
+import styles from "./page.module.css";
 
 export default function HomePage() {
   const setVideoArray = useGlobalStore((state) => state.setVideoArray);
@@ -11,8 +12,8 @@ export default function HomePage() {
   
 
   return (
-    <main>
-      <h1>This is the Home Page</h1>
+    <section className={styles.page}>
+      <h1 className={styles.headline}>This is the Home Page</h1>
       <Info />
       <List
         title="Videos"
@@ -20,6 +21,6 @@ export default function HomePage() {
       <List
         title="Results"
       />
-    </main>
+    </section>
   );
 }

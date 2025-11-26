@@ -1,0 +1,64 @@
+/* ResultsTable styles */
+.tableWrapper {
+  overflow-x: auto;
+  overflow-y: scroll;
+  height: 75vh;
+  border: 1px solid var(--background);
+  border-radius: var(--radius);
+  background: color-mix(in oklab, var(--secondary) 8%, transparent);
+  /* Firefox scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in oklab, var(--text) 40%, transparent) var(--background);
+}
+
+/* WebKit/Blink scrollbar */
+.tableWrapper::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.tableWrapper::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+.tableWrapper::-webkit-scrollbar-thumb {
+  background-color: color-mix(in oklab, var(--text) 40%, transparent);
+  border-radius: 999px;
+  border: 2px solid transparent; /* creates slim pill without boxy track */
+  background-clip: content-box;
+}
+
+.tableWrapper::-webkit-scrollbar-thumb:hover {
+  background-color: color-mix(in oklab, var(--text) 55%, transparent);
+}
+
+.tableWrapper::-webkit-scrollbar-corner {
+  background: var(--background);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 480px;
+}
+
+.table th,
+.table td {
+  padding: 10px 12px;
+  text-align: left;
+  border-top: 1px solid color-mix(in oklab, var(--text) 12%, transparent);
+}
+
+.table thead th {
+  position: sticky;
+  top: 0;
+  background: var(--background);
+  z-index: 1;
+  border-top: none;
+}
+
+.table tbody tr:nth-child(even) {
+  background: color-mix(in oklab, var(--primary) 15%, transparent);
+}
+
+

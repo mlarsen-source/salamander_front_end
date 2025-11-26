@@ -1,0 +1,14 @@
+/* Info card styles */
+.section {
+  padding: 16px;
+  border: 1px solid color-mix(in oklab, var(--text) 12%, transparent);
+  border-radius: var(--radius);
+  background: color-mix(in oklab, var(--background) 75%, transparent);
+}
+
+.title {
+  margin: 0 0 4px 0;
+  font-size: 18px;
+}
+
+

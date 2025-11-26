@@ -1,0 +1,21 @@
+/* Processing page styles */
+.wrap {
+  display: grid;
+  gap: 12px;
+}
+
+.headline {
+  margin: 0;
+  font-size: 26px;
+}
+
+.note {
+  color: color-mix(in oklab, var(--text) 75%, transparent);
+}
+
+.centered {
+  display: grid;
+  place-items: start;
+}
+
+

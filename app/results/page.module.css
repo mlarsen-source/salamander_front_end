@@ -1,0 +1,40 @@
+/* Results page styles */
+.wrap {
+  display: grid;
+  gap: 16px;
+}
+
+.titleContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.headline {
+  margin: 0;
+  font-size: 26px;
+}
+
+.subtitle {
+  margin: 0;
+  color: color-mix(in oklab, var(--text) 80%, transparent);
+}
+
+.downloadLink {
+  display: inline-block;
+  padding: 8px 12px;
+  border: 1px solid color-mix(in oklab, var(--text) 20%, transparent);
+  border-radius: var(--radius);
+  color: var(--text);
+  background: transparent;
+}
+.downloadLink:hover {
+  background: color-mix(in oklab, var(--secondary) 35%, transparent);
+  text-decoration: none;
+}
+
+.error {
+  color: #b00020;
+}
+
+

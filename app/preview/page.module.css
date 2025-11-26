@@ -1,0 +1,13 @@
+/* Preview page styles */
+.page {
+  display: grid;
+  gap: 24px;
+}
+
+.headline {
+  margin: 0;
+  font-size: 26px;
+  line-height: 1.25;
+}
+
+

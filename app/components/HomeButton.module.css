@@ -1,0 +1,17 @@
+/* Home button styles (secondary/outline) */
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: var(--radius);
+  border: 1px solid color-mix(in oklab, var(--text) 20%, transparent);
+  background: transparent;
+  color: var(--text);
+  transition: background 120ms ease, border-color 120ms ease;
+}
+.button:hover {
+  background: color-mix(in oklab, var(--secondary) 35%, transparent);
+}
+
+

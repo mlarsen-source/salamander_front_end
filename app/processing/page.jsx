@@ -4,6 +4,7 @@ import { useGlobalStore } from "@/app/store/useGlobalStore";
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import HomeButton from "@/app/components/HomeButton";
+import styles from "./page.module.css";
 
 export default function ProcessingPage() {
   const jobId = useGlobalStore((state) => state.jobId);
@@ -91,27 +92,27 @@ export default function ProcessingPage() {
 
   if (processing) {
     return (
-      <div>
-        <h1>Processing...</h1>
-        <p>This may take a few minutes...</p>
+      <div className={styles.wrap}>
+        <h1 className={styles.headline}>Processing...</h1>
+        <p className={styles.note}>This may take a few minutes...</p>
       </div>
     );
   } 
 
   if (error) {
     return (
-      <div>
-        <h1>Error...</h1>
-        <p>An error occurred while processing the video.</p>
+      <div className={styles.wrap}>
+        <h1 className={styles.headline}>Error...</h1>
+        <p className={styles.note}>An error occurred while processing the video.</p>
         <HomeButton />
       </div>
     );
   } 
 
   return (
-    <div>
-      <h1>Success...</h1>
-      <p>The video has been processed successfully.</p>
+    <div className={styles.wrap}>
+      <h1 className={styles.headline}>Success...</h1>
+      <p className={styles.note}>The video has been processed successfully.</p>
     </div>
   );
 }

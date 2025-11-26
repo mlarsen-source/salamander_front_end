@@ -1,0 +1,54 @@
+/* ColorPicker styles */
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.title {
+  margin: 0;
+  font-size: 20px;
+}
+
+.indicatorRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.indicatorBox {
+  width: 50px;
+  height: 50px;
+  border: 2px solid #000;
+  border-radius: var(--radius);
+}
+
+.indicatorText {
+  font-weight: 600;
+  min-width: 130px;
+}
+
+.hiddenCanvas {
+  display: none;
+}
+
+.image {
+  width: 400px;
+  border: 2px solid black;
+  border-radius: var(--radius);
+  cursor: crosshair;
+}
+
+.resetButton {
+  padding: 6px 10px;
+  border-radius: var(--radius);
+  border: 1px solid color-mix(in oklab, var(--text) 20%, transparent);
+  background: transparent;
+  color: var(--text);
+  margin-left: auto;
+}
+.resetButton:hover {
+  background: color-mix(in oklab, red 35%, transparent);
+}
+
+

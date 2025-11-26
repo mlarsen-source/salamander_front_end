@@ -2,6 +2,7 @@
 
 import { useGlobalStore } from "@/app/store/useGlobalStore";
 import { useEffect, useRef, useState } from "react";
+import styles from "./ColorPicker.module.css";
 
 export default function ColorPicker() {
   // Zustand state
@@ -84,6 +85,7 @@ export default function ColorPicker() {
     if (isLocked) return;
 
     const canvas = canvasRef.current;
+    if (!canvas) return;
     const ctx = canvas.getContext("2d");
     const rect = e.target.getBoundingClientRect();
 
@@ -122,58 +124,40 @@ export default function ColorPicker() {
   }
 
   return (
-    <div style={{ marginBottom: "20px" }}>
-      <h2>Color Picker</h2>
+    <div className={styles.root}>
+      <h2 className={styles.title}>Color Picker</h2>
+      <img
+            ref={imgRef}
+            src={thumbnail}
+            alt="thumbnail"
+            className={styles.image}
+            onMouseMove={handleHover}
+            onClick={handleClick}
+          />
 
       {thumbnail && (
         <>
           {/* Color Indicator */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "12px",
-              marginBottom: "10px",
-            }}>
+          <div className={styles.indicatorRow}>
             <div
-              style={{
-                width: "50px",
-                height: "50px",
-                border: "2px solid #000",
-                backgroundColor: hoverColorHex || `#${DEFAULT_COLOR}`,
-              }}
+              className={styles.indicatorBox}
+              style={{ backgroundColor: hoverColorHex || `#${DEFAULT_COLOR}` }}
             />
-            <div style={{ fontWeight: "bold", minWidth: "130px" }}>
+            <div className={styles.indicatorText}>
               {hoverColorHex || `#${DEFAULT_COLOR}`}
               <br />
               {hoverColorRGB || ""}
             </div>
 
             {isLocked ? (
-              <button onClick={resetPicker}>Reset</button>
+              <button className={styles.resetButton} onClick={resetPicker}>Reset</button>
             ) : (
               <span> Click image to select Color</span>
             )}
           </div>
 
           {/* Canvas + Image */}
-          <canvas
-            ref={canvasRef}
-            style={{ display: "none" }}
-          />
-
-          <img
-            ref={imgRef}
-            src={thumbnail}
-            alt="thumbnail"
-            style={{
-              maxWidth: "300px",
-              border: "2px solid black",
-              cursor: "crosshair",
-            }}
-            onMouseMove={handleHover}
-            onClick={handleClick}
-          />
+          <canvas ref={canvasRef} className={styles.hiddenCanvas} />
         </>
       )}
 

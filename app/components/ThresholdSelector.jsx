@@ -2,6 +2,7 @@
 
 import { useGlobalStore } from "@/app/store/useGlobalStore";
 import { useEffect, useRef, useState } from "react";
+import styles from "./ThresholdSelector.module.css";
 
 export default function ThresholdSelector() {
   const thumbnail = useGlobalStore((state) => state.thumbnail);
@@ -161,39 +162,27 @@ export default function ThresholdSelector() {
   }
 
   return (
-    <section>
-      <h2>Threshold Selector</h2>
+    <section className={styles.section}>
+      <h2 className={styles.title}>Threshold Selector</h2>
+      {bwImage && (
+        <img src={bwImage} alt="binarized" className={styles.preview} />
+      )}
 
       {!thumbnail && <p>No thumbnail loaded</p>}
 
       {thumbnail && (
         <>
-          <label>Threshold: {threshold}</label>
+          <label className={styles.sliderLabel}>Threshold: {threshold}</label>
           <input
             type="range"
             min="0"
             max="255"
             value={threshold}
             onChange={(e) => setThreshold(Number(e.target.value))}
-            style={{ width: "300px", display: "block", marginBottom: "12px" }}
+            className={styles.slider}
           />
 
-          <h4>Preview (Binarized)</h4>
-          <canvas
-            ref={canvasRef}
-            style={{ display: "none" }}
-          />
-
-          {bwImage && (
-            <img
-              src={bwImage}
-              alt="binarized"
-              style={{
-                maxWidth: "300px",
-                border: "2px solid black",
-              }}
-            />
-          )}
+          <canvas ref={canvasRef} className={styles.hiddenCanvas} />
         </>
       )}
     </section>

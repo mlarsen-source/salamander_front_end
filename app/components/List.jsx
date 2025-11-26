@@ -1,6 +1,7 @@
 import { useGlobalStore } from "@/app/store/useGlobalStore";
 import Link from "next/link";
 import { useEffect } from "react";
+import styles from "./List.module.css";
 
 export default function List({ title }) {
   const setSelectedVideo = useGlobalStore((state) => state.setSelectedVideo);
@@ -44,8 +45,9 @@ export default function List({ title }) {
 
   const fileList = fileNames.map((fileName) => {
     return (
-      <li key={fileName}>
+      <li key={fileName} className={styles.item}>
         <Link
+          className={styles.link}
           href={route}
           onClick={() => handleSelected(type, fileName)}>
           {" "}
@@ -56,9 +58,9 @@ export default function List({ title }) {
   });
 
   return (
-    <section>
-      <h3>This is the {title} Component</h3>
-      <ul>{fileList}</ul>
+    <section className={styles.section}>
+      <h3 className={styles.title}>This is the {title} Component</h3>
+      <ul className={styles.list}>{fileList}</ul>
     </section>
   );
 }

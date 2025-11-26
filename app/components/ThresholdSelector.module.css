@@ -1,0 +1,32 @@
+/* ThresholdSelector styles */
+.section {
+  display: grid;
+  gap: 12px;
+}
+
+.title {
+  margin: 0;
+  font-size: 20px;
+}
+
+.sliderLabel {
+  font-weight: 600;
+}
+
+.slider {
+  width: 100%;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.hiddenCanvas {
+  display: none;
+}
+
+.preview {
+  width: 400px;
+  border: 2px solid black;
+  border-radius: var(--radius);
+}
+
+

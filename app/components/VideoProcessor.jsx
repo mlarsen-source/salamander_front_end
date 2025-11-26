@@ -3,6 +3,7 @@ import ColorPicker from "@/app/components/ColorPicker";
 import ThresholdSelector from "@/app/components/ThresholdSelector";
 import { useGlobalStore } from "@/app/store/useGlobalStore";
 import { useRouter } from "next/navigation";
+import styles from "./VideoProcessor.module.css";
 
 export default function VideoProcessor() {
   const selectedVideo = useGlobalStore((state) => state.selectedVideo);
@@ -39,12 +40,15 @@ export default function VideoProcessor() {
     }
   }
 
+  if (!selectedVideo) return;
+
   return (
-    <div style={{ marginBottom: "20px" }}>
-      <h2>Preview</h2>
-      <ColorPicker />
-      <ThresholdSelector />
-      <button onClick={startProcess}>Process</button>
+    <div className={styles.wrap}>
+      <div className={styles.content}>
+        <ColorPicker />
+        <ThresholdSelector />
+      </div>
+      <button className={styles.primaryButton} onClick={startProcess}>Process</button>
     </div>
   );
 }

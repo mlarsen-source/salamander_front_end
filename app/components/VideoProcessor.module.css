@@ -1,0 +1,33 @@
+/* VideoProcessor styles */
+.wrap {
+  display: grid;
+  gap: 16px;
+}
+
+.title {
+  margin: 0;
+  font-size: 20px;
+}
+
+.content {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+.primaryButton {
+  justify-self: start;
+  padding: 8px 14px;
+  border-radius: var(--radius);
+  background: var(--primary);
+  color: #0f120f;
+  border: 1px solid color-mix(in oklab, var(--text) 10%, transparent);
+  transition: filter 120ms ease, transform 60ms ease;
+}
+.primaryButton:hover {
+  filter: brightness(1.10);
+}
+.primaryButton:active {
+  transform: translateY(1px);
+}
+
+

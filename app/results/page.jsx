@@ -4,6 +4,7 @@ import HomeButton from "@/app/components/HomeButton";
 import ResultsTable from "@/app/components/ResultsTable";
 import { useGlobalStore } from "@/app/store/useGlobalStore";
 import { useEffect, useState } from "react";
+import styles from "./page.module.css";
 
 export default function ResultsPage() {
   const selectedCsv = useGlobalStore((state) => state.selectedCsv);
@@ -47,7 +48,7 @@ export default function ResultsPage() {
 
   if (!selectedCsv) {
     return (
-      <div>
+      <div className={styles.wrap}>
         <p>No CSV selected.</p>
         <HomeButton />
       </div>
@@ -55,19 +56,19 @@ export default function ResultsPage() {
   }
 
   return (
-    <div>
-      <h1>This is the Results Page</h1>
-      <h2>Results for: {title}</h2>
+    <div className={styles.wrap}>
+      <div className={styles.titleContainer}>
+        {downloadUrl && (
+          <h2>
+            <a href={downloadUrl} download={selectedCsv}>
+              {selectedCsv}
+            </a>
+          </h2>
+        )}
+        <HomeButton />
+      </div>
       <ResultsTable rows={rows} />
-      {downloadUrl && (
-        <a
-          href={downloadUrl}
-          download={selectedCsv}>
-          {selectedCsv}
-        </a>
-      )}
-      {error && <p>{error}</p>}
-      <HomeButton />
+      {error && <p className={styles.error}>{error}</p>}
     </div>
   );
 }
