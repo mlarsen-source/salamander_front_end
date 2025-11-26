@@ -9,7 +9,6 @@ export default function ThresholdSelector() {
   const targetColor = useGlobalStore((state) => state.targetColor);
   const threshold = useGlobalStore((state) => state.threshold);
   const setThreshold = useGlobalStore((state) => state.setThreshold);
-  console.log(threshold);
 
   const canvasRef = useRef(null);
   const [bwImage, setBwImage] = useState(null);
@@ -165,7 +164,11 @@ export default function ThresholdSelector() {
     <section className={styles.section}>
       <h2 className={styles.title}>Threshold Selector</h2>
       {bwImage && (
-        <img src={bwImage} alt="binarized" className={styles.preview} />
+        <img
+          src={bwImage}
+          alt="binarized"
+          className={styles.preview}
+        />
       )}
 
       {!thumbnail && <p>No thumbnail loaded</p>}
@@ -182,7 +185,10 @@ export default function ThresholdSelector() {
             className={styles.slider}
           />
 
-          <canvas ref={canvasRef} className={styles.hiddenCanvas} />
+          <canvas
+            ref={canvasRef}
+            className={styles.hiddenCanvas}
+          />
         </>
       )}
     </section>
