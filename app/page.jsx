@@ -13,7 +13,6 @@ export default function HomePage() {
 
   return (
     <section className={styles.page}>
-      <h1 className={styles.headline}>This is the Home Page</h1>
       <Info />
       <List
         title="Videos"

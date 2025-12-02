@@ -7,11 +7,12 @@
   border-radius: var(--radius);
   border: 1px solid color-mix(in oklab, var(--text) 20%, transparent);
   background: transparent;
+  background-color: var(--background);
   color: var(--text);
   transition: background 120ms ease, border-color 120ms ease;
 }
 .button:hover {
-  background: color-mix(in oklab, var(--secondary) 35%, transparent);
+  background: color-mix(in oklab, var(--background) 65%, transparent);
 }
 
 

@@ -9,8 +9,8 @@ export default function RootLayout({ children }) {
       <body className={inter.className}>
         <header className="site-header">
           <div className="site-header__inner">
-            <div className="site-header__brand">Brand Placeholder</div>
-            <div className="site-header__placeholder" />
+            <h2 className="site-header__brand">Salamander Centroid Finder</h2>
+            <img src="./salamander-2.svg" className="header-img" />
           </div>
         </header>
         <main className="site-container">

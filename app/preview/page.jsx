@@ -7,16 +7,18 @@ import styles from "./page.module.css";
 import { useGlobalStore } from "../store/useGlobalStore";
 
 export default function PreviewPage() {
-  const selectedVideo = useGlobalStore(state => state.selectedVideo);
-  const displayTitle = selectedVideo ? selectedVideo : 'Select a video for processing'
+  const selectedVideo = useGlobalStore((state) => state.selectedVideo);
+  const displayTitle = selectedVideo
+    ? selectedVideo
+    : "Select a video for processing";
   return (
     <section className={styles.page}>
-      <h1 className={styles.headline}>{displayTitle}</h1>
+      <div className={styles.titleDiv}>
+        <h1 className={styles.headline}>{displayTitle}</h1>
+        <HomeButton />
+      </div>
       <VideoProcessor />
-      <List
-        title="Videos"
-      />
-      <HomeButton />
+      <List title="Videos" />
     </section>
   );
 }
