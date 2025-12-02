@@ -108,8 +108,25 @@ export default function ResultsPage() {
   // -------- PAGE UI --------
   return (
     <div>
-      <h1>Results Analysis Page</h1>
-      <h2>{selectedCsv ? selectedCsv.replace(".csv", "") : "No CSV Loaded"}</h2>
+      <div className="titleDiv">
+        <h2 className="m-0 h-4">
+          {selectedCsv ? (
+            <div style={{ marginTop: "24px" }}>
+              <a
+                download={selectedCsv}
+                href={URL.createObjectURL(
+                  new Blob([csvText], { type: "text/csv" })
+                )}
+              >
+                Download {selectedCsv}
+              </a>
+            </div>
+          ) : (
+            "No CSV Loaded"
+          )}
+        </h2>
+        <HomeButton />
+      </div>
 
       <h3>Select a zone layout for analysis:</h3>
 
@@ -135,27 +152,10 @@ export default function ResultsPage() {
       </div>
 
       {analysisData && (
-        <AnalysisCard
-          data={analysisData.zones}
-          layout={analysisData.layout}
-        />
-      )}
-
-      {csvText && (
-        <div style={{ marginTop: "24px" }}>
-          <a
-            download={selectedCsv}
-            href={URL.createObjectURL(
-              new Blob([csvText], { type: "text/csv" })
-            )}>
-            Download {selectedCsv}
-          </a>
-        </div>
+        <AnalysisCard data={analysisData.zones} layout={analysisData.layout} />
       )}
 
       {error && <p style={{ color: "red" }}>{error}</p>}
-
-      <HomeButton />
     </div>
   );
 }
