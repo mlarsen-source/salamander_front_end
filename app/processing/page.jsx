@@ -1,9 +1,9 @@
 "use client";
 
-import { useGlobalStore } from "@/app/store/useGlobalStore";
-import { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
 import HomeButton from "@/app/components/HomeButton";
+import { useGlobalStore } from "@/app/store/useGlobalStore";
+import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 import styles from "./page.module.css";
 
 export default function ProcessingPage() {
@@ -12,9 +12,17 @@ export default function ProcessingPage() {
   const selectedVideo = useGlobalStore((state) => state.selectedVideo);
   const [processing, setProcessing] = useState(true);
   const [error, setError] = useState(false);
+  const [dotCount, setDotCount] = useState(0);
   const controllerRef = useRef(null);
   const router = useRouter();
 
+  useEffect(() => {
+    if (!processing) return;
+    const interval = setInterval(() => {
+      setDotCount((prev) => (prev + 1) % 4);
+    }, 500);
+    return () => clearInterval(interval);
+  }, [processing]);
 
   // need to add logic to loop api fetch status using jobId until jobId == "done"
   useEffect(() => {
@@ -36,9 +44,12 @@ export default function ProcessingPage() {
       controllerRef.current = new AbortController();
 
       try {
-        const res = await fetch(`http://localhost:3000/process/${jobId}/status`, {
-          signal: controllerRef.current.signal,
-        });
+        const res = await fetch(
+          `http://localhost:3000/process/${jobId}/status`,
+          {
+            signal: controllerRef.current.signal,
+          }
+        );
         const data = await res.json();
 
         if (!res.ok) {
@@ -56,7 +67,7 @@ export default function ProcessingPage() {
         if (data.status !== "processing") {
           setProcessing(false);
           setSelectedCsv(`${selectedVideo}.csv`);
-          cancelled = true;            // prevents scheduling the next timeout
+          cancelled = true; // prevents scheduling the next timeout
           router.push("/results");
           return; // stop polling on success/done
         }
@@ -67,7 +78,6 @@ export default function ProcessingPage() {
         setError(true);
         setProcessing(false);
         cancelled = true;
-
       } finally {
         if (!cancelled) {
           timeoutId = setTimeout(poll, POLL_INTERVAL_MS);
@@ -88,26 +98,26 @@ export default function ProcessingPage() {
     };
   }, [jobId]);
 
-  
-
   if (processing) {
     return (
       <div className={styles.wrap}>
-        <h1 className={styles.headline}>Processing...</h1>
+        <h1 className={styles.headline}>Processing{".".repeat(dotCount)}</h1>
         <p className={styles.note}>This may take a few minutes...</p>
       </div>
     );
-  } 
+  }
 
   if (error) {
     return (
       <div className={styles.wrap}>
         <h1 className={styles.headline}>Error...</h1>
-        <p className={styles.note}>An error occurred while processing the video.</p>
+        <p className={styles.note}>
+          An error occurred while processing the video.
+        </p>
         <HomeButton />
       </div>
     );
-  } 
+  }
 
   return (
     <div className={styles.wrap}>
