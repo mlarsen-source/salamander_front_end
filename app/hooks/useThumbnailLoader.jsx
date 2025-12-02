@@ -11,7 +11,7 @@ export function useThumbnailLoader() {
   const setVideoHeight = useGlobalStore((state) => state.setVideoHeight);
 
   useEffect(() => {
-    if (!selectedVideo || thumbnail) return;
+    if (!selectedVideo) return;
 
     async function loadThumbnail() {
       try {
