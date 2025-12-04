@@ -27,12 +27,31 @@ export default function ColorPicker() {
     const ctx = canvas.getContext("2d");
 
     const draw = () => {
-      canvas.width = img.naturalWidth || img.width;
-      canvas.height = img.naturalHeight || img.height;
+      if (!img.naturalWidth || !img.naturalHeight) {
+        console.warn("Image not ready, skipping draw");
+        return;
+      }
+
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
       ctx.drawImage(img, 0, 0);
     };
 
-    img.complete ? draw() : (img.onload = draw);
+    const handleError = () => {
+      console.error("Failed to load image");
+    };
+
+    img.addEventListener("error", handleError);
+
+    if (img.complete && img.naturalWidth > 0) {
+      draw();
+    } else {
+      img.onload = draw;
+    }
+
+    return () => {
+      img.removeEventListener("error", handleError);
+    };
   }, [thumbnail]);
 
   function rgbToHex(r, g, b) {
@@ -50,6 +69,7 @@ export default function ColorPicker() {
 
     const canvas = canvasRef.current;
     if (!canvas) return;
+
     const ctx = canvas.getContext("2d");
     const rect = e.target.getBoundingClientRect();
 
@@ -62,10 +82,13 @@ export default function ColorPicker() {
     const x = Math.floor(displayX * scaleX);
     const y = Math.floor(displayY * scaleY);
 
-    const pixel = ctx.getImageData(x, y, 1, 1).data;
-
-    setHoverColorHex(rgbToHex(pixel[0], pixel[1], pixel[2]));
-    setHoverColorRGB(`rgb(${pixel[0]}, ${pixel[1]}, ${pixel[2]})`);
+    try {
+      const pixel = ctx.getImageData(x, y, 1, 1).data;
+      setHoverColorHex(rgbToHex(pixel[0], pixel[1], pixel[2]));
+      setHoverColorRGB(`rgb(${pixel[0]}, ${pixel[1]}, ${pixel[2]})`);
+    } catch (err) {
+      console.warn("Canvas not ready for color picking");
+    }
   }
 
   function handleClick() {
