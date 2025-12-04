@@ -1,14 +1,15 @@
 "use client";
 
 import { useGlobalStore } from "@/app/store/useGlobalStore";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 export function useThumbnailLoader() {
   const selectedVideo = useGlobalStore((state) => state.selectedVideo);
-  const thumbnail = useGlobalStore((state) => state.thumbnail);
   const setThumbnail = useGlobalStore((state) => state.setThumbnail);
   const setVideoWidth = useGlobalStore((state) => state.setVideoWidth);
   const setVideoHeight = useGlobalStore((state) => state.setVideoHeight);
+
+  const currentUrlRef = useRef(null);
 
   useEffect(() => {
     if (!selectedVideo) return;
@@ -30,9 +31,19 @@ export function useThumbnailLoader() {
         const img = new Image();
         img.src = url;
         img.onload = () => {
+          if (currentUrlRef.current && currentUrlRef.current !== url) {
+            URL.revokeObjectURL(currentUrlRef.current);
+          }
+
+          currentUrlRef.current = url;
           setThumbnail(url);
           setVideoWidth(img.naturalWidth);
           setVideoHeight(img.naturalHeight);
+        };
+
+        img.onerror = () => {
+          console.error("Image failed to load:", url);
+          URL.revokeObjectURL(url);
         };
       } catch (err) {
         console.error("Error loading thumbnail:", err);
@@ -40,5 +51,7 @@ export function useThumbnailLoader() {
     }
 
     loadThumbnail();
-  }, [selectedVideo, thumbnail, setThumbnail, setVideoWidth, setVideoHeight]);
+
+    return () => {};
+  }, [selectedVideo, setThumbnail, setVideoWidth, setVideoHeight]);
 }
