@@ -2,6 +2,7 @@
 
 import AnalysisCard from "@/app/components/AnalysisCard";
 import HomeButton from "@/app/components/HomeButton";
+import List from "@/app/components/List";
 import OptionCard from "@/app/components/OptionCard";
 import { useThumbnailLoader } from "@/app/hooks/useThumbnailLoader";
 import { useGlobalStore } from "@/app/store/useGlobalStore";
@@ -21,6 +22,7 @@ export default function ResultsPage() {
   const videoWidth = useGlobalStore((state) => state.videoWidth);
   const videoHeight = useGlobalStore((state) => state.videoHeight);
   const [analysisData, setAnalysisData] = useState(null);
+  const [showList, setShowList] = useState(true); // DEFAULT SHOW LIST
 
   useEffect(() => {
     if (!selectedCsv) return;
@@ -69,7 +71,6 @@ export default function ResultsPage() {
       .fill(null)
       .map(() => ({ count: 0, duration: 0, percentage: 0 }));
 
-    // frame durations
     const durations = [];
     for (let i = 0; i < rows.length; i++) {
       if (i < rows.length - 1) {
@@ -91,7 +92,7 @@ export default function ResultsPage() {
       } else {
         const col = x < videoWidth / 2 ? 0 : 1;
         const row = y < videoHeight / 2 ? 0 : 1;
-        index = row * 2 + col; // TL, TR, BL, BR
+        index = row * 2 + col;
       }
 
       zones[index].count++;
@@ -103,12 +104,15 @@ export default function ResultsPage() {
     });
 
     setAnalysisData({ zones, layout });
+    setShowList(false); // SWITCH TO ANALYSIS AFTER CALCULATION
   };
 
   // -------- PAGE UI --------
   return (
     <div>
-      <div className="titleDiv" style={{ alignItems: "center" }}>
+      <div
+        className="titleDiv"
+        style={{ alignItems: "center" }}>
         <h2>
           {selectedCsv ? (
             <div>
@@ -116,8 +120,7 @@ export default function ResultsPage() {
                 download={selectedCsv}
                 href={URL.createObjectURL(
                   new Blob([csvText], { type: "text/csv" })
-                )}
-              >
+                )}>
                 Download {selectedCsv}
               </a>
             </div>
@@ -130,30 +133,50 @@ export default function ResultsPage() {
 
       <h3>Select a zone layout for analysis:</h3>
 
-      <div style={{ display: "flex", gap: "16px", flexWrap: "wrap", justifyContent: "space-between" }}>
-        <OptionCard
-          type="vertical"
-          isSelected={analysisData?.layout === "vertical"}
-          onClick={() => analyzeZones("vertical")}
-          thumbnailSrc={thumbnail}
-        />
-        <OptionCard
-          type="horizontal"
-          isSelected={analysisData?.layout === "horizontal"}
-          onClick={() => analyzeZones("horizontal")}
-          thumbnailSrc={thumbnail}
-        />
-        <OptionCard
-          type="grid"
-          isSelected={analysisData?.layout === "grid"}
-          onClick={() => analyzeZones("grid")}
-          thumbnailSrc={thumbnail}
-        />
+      <div>
+        <div
+          style={{
+            display: "flex",
+            gap: "16px",
+            flexWrap: "wrap",
+            justifyContent: "space-between",
+          }}>
+          <OptionCard
+            type="vertical"
+            isSelected={analysisData?.layout === "vertical"}
+            onClick={() => analyzeZones("vertical")}
+            thumbnailSrc={thumbnail}
+          />
+          <OptionCard
+            type="horizontal"
+            isSelected={analysisData?.layout === "horizontal"}
+            onClick={() => analyzeZones("horizontal")}
+            thumbnailSrc={thumbnail}
+          />
+          <OptionCard
+            type="grid"
+            isSelected={analysisData?.layout === "grid"}
+            onClick={() => analyzeZones("grid")}
+            thumbnailSrc={thumbnail}
+          />
+        </div>
+
+        {analysisData && !showList && (
+          <button onClick={() => setShowList(true)}>Show List</button>
+        )}
       </div>
+
       <div className="flex justify-between">
-      {analysisData && (
-        <AnalysisCard data={analysisData.zones} layout={analysisData.layout} />
-      )}
+        {showList ? (
+          <List title="Results" />
+        ) : (
+          analysisData && (
+            <AnalysisCard
+              data={analysisData.zones}
+              layout={analysisData.layout}
+            />
+          )
+        )}
       </div>
 
       {error && <p style={{ color: "red" }}>{error}</p>}
