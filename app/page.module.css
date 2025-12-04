@@ -1,11 +1,4 @@
 /* Home page styles */
-body {
-  background-image: url("/bg-1.jpg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-}
-
 .page {
   display: grid;
   gap: 24px;

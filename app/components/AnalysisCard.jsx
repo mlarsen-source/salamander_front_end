@@ -28,17 +28,19 @@ export default function AnalysisCard({ data, layout }) {
   };
 
   return (
-    <div style={{ marginTop: "24px" }}>
+    <div className="">
       <h3>{getTitle()}</h3>
-
+      <div style={{ display: "flex", justifyContent: "space-between", gap: "16px" }}>
       {data.map((zone, idx) => (
-        <div
+        <div 
           key={idx}
           style={{
             border: "1px solid gray",
             padding: "8px",
             margin: "8px 0",
-            borderRadius: "4px",
+            borderRadius: "16px",
+            flex: 1,
+            backgroundColor: "var(--background)"
           }}>
           <h4>{getZoneName(idx)}</h4>
           <p>Frames: {zone.count}</p>
@@ -46,6 +48,7 @@ export default function AnalysisCard({ data, layout }) {
           <p>Percentage: {zone.percentage.toFixed(1)}%</p>
         </div>
       ))}
+      </div>
     </div>
   );
 }

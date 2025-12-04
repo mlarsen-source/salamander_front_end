@@ -1,5 +1,6 @@
 /* List component styles */
 .section {
+  flex: 1;
   padding: 16px;
   border: 1px solid color-mix(in oklab, var(--text) 12%, transparent);
   border-radius: var(--radius);
@@ -14,9 +15,34 @@
 .list {
   margin: 0;
   padding: 0;
+  max-height: 220px;   /* pick a value or use clamp() */
+  overflow-y: auto;
   list-style: none;
   display: grid;
   gap: 8px;
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in oklab, var(--accent) 40%, transparent) transparent; /* thumb, track */
+}
+
+.list::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  background: transparent; /* no track background */
+}
+.list::-webkit-scrollbar-thumb {
+  background-color: #9ca3af; /* gray thumb */
+  border-radius: 9999px;
+  border: 2px solid transparent; /* space around thumb; keeps track transparent */
+  background-clip: content-box;
+}
+.list::-webkit-scrollbar-track {
+  background: transparent; /* hide track */
+}
+.list::-webkit-scrollbar-button {
+  display: none; /* no arrows */
+  width: 0;
+  height: 0;
 }
 
 .item a {

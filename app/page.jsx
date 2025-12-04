@@ -14,12 +14,14 @@ export default function HomePage() {
   return (
     <section className={styles.page}>
       <Info />
-      <List
-        title="Videos"
-      />
-      <List
-        title="Results"
-      />
+      <div style={{ display: "flex", justifyContent: "space-between", gap: "16px" }}>
+        <List
+          title="Videos"
+        />
+        <List
+          title="Results"
+        />
+      </div>
     </section>
   );
 }

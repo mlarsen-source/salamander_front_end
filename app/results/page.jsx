@@ -108,10 +108,10 @@ export default function ResultsPage() {
   // -------- PAGE UI --------
   return (
     <div>
-      <div className="titleDiv">
-        <h2 className="m-0 h-4">
+      <div className="titleDiv" style={{ alignItems: "center" }}>
+        <h2>
           {selectedCsv ? (
-            <div style={{ marginTop: "24px" }}>
+            <div>
               <a
                 download={selectedCsv}
                 href={URL.createObjectURL(
@@ -130,7 +130,7 @@ export default function ResultsPage() {
 
       <h3>Select a zone layout for analysis:</h3>
 
-      <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
+      <div style={{ display: "flex", gap: "16px", flexWrap: "wrap", justifyContent: "space-between" }}>
         <OptionCard
           type="vertical"
           isSelected={analysisData?.layout === "vertical"}
@@ -150,10 +150,11 @@ export default function ResultsPage() {
           thumbnailSrc={thumbnail}
         />
       </div>
-
+      <div className="flex justify-between">
       {analysisData && (
         <AnalysisCard data={analysisData.zones} layout={analysisData.layout} />
       )}
+      </div>
 
       {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
