@@ -18,7 +18,7 @@ export default function PreviewPage() {
         <HomeButton />
       </div>
       <VideoProcessor />
-      <List title="Videos" />
+      <List title="Videos" isPreview={true} />
     </section>
   );
 }

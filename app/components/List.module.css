@@ -55,4 +55,7 @@
   text-decoration: none;
 }
 
+.prevListHeight {
+  max-height: 150px;
+}
 

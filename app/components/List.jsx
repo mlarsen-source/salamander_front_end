@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useEffect } from "react";
 import styles from "./List.module.css";
 
-export default function List({ title }) {
+export default function List({ title, isPreview }) {
   const setSelectedVideo = useGlobalStore((state) => state.setSelectedVideo);
   const setSelectedCsv = useGlobalStore((state) => state.setSelectedCsv);
   const setVideoArray = useGlobalStore((state) => state.setVideoArray);
@@ -65,7 +65,6 @@ export default function List({ title }) {
   return (
     <section className={styles.section}>
       <h3 className={styles.title}>{title}</h3>
-      <ul className={styles.list}>{fileList}</ul>
-    </section>
+      <ul className={`${styles.list} ${isPreview ? styles.prevListHeight : ""}`}>{fileList}</ul>    </section>
   );
 }
