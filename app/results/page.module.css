@@ -1,0 +1,20 @@
+.showListButton {
+  margin: 16px auto;
+  display: block;
+  padding: 8px 16px;
+  border-radius: var(--radius);
+  background: var(--primary);
+  color: #0f120f;
+  border: 1px solid color-mix(in oklab, var(--text) 10%, transparent);
+  transition: filter 120ms ease, transform 60ms ease;
+}
+.showListButton:hover {
+  filter: brightness(1.10);
+}
+.showListButton:active {
+  transform: translateY(1px);
+}
+
+.contentContainer {
+  margin-top: 24px;
+}

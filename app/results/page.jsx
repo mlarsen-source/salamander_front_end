@@ -7,6 +7,7 @@ import OptionCard from "@/app/components/OptionCard";
 import { useThumbnailLoader } from "@/app/hooks/useThumbnailLoader";
 import { useGlobalStore } from "@/app/store/useGlobalStore";
 import { useEffect, useState } from "react";
+import styles from "./page.module.css";
 
 export default function ResultsPage() {
   useThumbnailLoader();
@@ -160,13 +161,9 @@ export default function ResultsPage() {
             thumbnailSrc={thumbnail}
           />
         </div>
-
-        {analysisData && !showList && (
-          <button onClick={() => setShowList(true)}>Show List</button>
-        )}
       </div>
 
-      <div className="flex justify-between">
+      <div className={styles.contentContainer}>
         {showList ? (
           <List title="Results" />
         ) : (
@@ -178,6 +175,9 @@ export default function ResultsPage() {
           )
         )}
       </div>
+      {analysisData && !showList && (
+          <button className={styles.showListButton} onClick={() => setShowList(true)}>Show Results List</button>
+        )}
 
       {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
